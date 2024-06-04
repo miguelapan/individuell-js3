@@ -6,8 +6,8 @@
     "Fira Mono", "Droid Sans Mono", "Courier New", monospace;
 
   --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --background-start-rgb: 214, 289, 220;
+  --background-end-rgb: 255, 230, 255;
 
   --primary-glow: conic-gradient(
     from 180deg at 50% 50%,
@@ -87,12 +87,92 @@ body {
 
 body {
   color: rgb(var(--foreground-rgb));
+  min-height: 100vh;
   background: linear-gradient(
       to bottom,
       transparent,
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+    display: grid;
+    place-content: center;
+}
+.welcome-button{
+  font-size: 2rem;
+  animation: pulse-animation 2s infinite;
+  transition: 500ms;
+}
+.welcome-button:hover{
+  transform: scale(1.2);
+}
+@keyframes pulse-animation {
+  0% {
+    color: rgb(255, 55, 0);
+  }
+  50% {
+    color: rgb(0, 255, 0);
+  }
+  100% {
+    color: rgb(0, 72, 255);
+  }
+}
+Nav{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: var(--primary-glow);
+  backdrop-filter: blur(10px);
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+ul{
+  list-style: none;
+}
+li{
+  margin-left: 0;
+}
+
+.modal {
+  position: absolute;
+  display: grid;
+  place-content: center;
+  z-index: 100;
+  background-color: rgb(231, 91, 91);
+  height: 100vh;
+  width: 100vw;
+  left: 0;
+  top: 0;
+}
+
+.modal-grid {
+  width: 40vw;
+  display: flex;
+  flex-direction: column; 
+  align-items: center; 
+  height: 100%;
+}
+
+.modal-grid button {
+  width: fit-content;
+}
+button{
+  margin: .3rem;
+  cursor: pointer;
+  background: none;
+  outline: none;
+  border: none;
+  background-color: purple;
+  padding: .3rem;
+  border-radius: 3px;
+  border-bottom: rgb(34, 33, 33) 2px solid;
+  border-right: rgb(42, 42, 42) 2px solid;
+}
+button:hover{
+  border-bottom: black 3px solid;
+  border-right: black 4px solid;
+  background-color: rgb(116, 0, 116);
+  transition: 20ms;
 }
 
 a {
