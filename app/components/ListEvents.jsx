@@ -15,11 +15,18 @@ function ListEvents() {
 
     const [ data, setData ] = useState([])
     const [ error, setError ] = useState(null)
-    
+    const [sortBy, setSortBy] = useState('name')
+
+    const toggleSort = () => {
+        setSortBy(sortBy === 'name' ? 'date' : 'name');
+    };
+
+    // GET ALL EVENTS
     useEffect(() => {
         getAll().then(data => setData(data))
     },[isLoaded])
 
+    // MODL FUNCTIONALTY
     const modalHandler = (event) => {
         setEvent(event)
         setShowModal(true)
@@ -29,6 +36,8 @@ function ListEvents() {
         setShowModal(false)
         router.push(`dashboard`, undefined, { shallow: true });
     }
+
+    // HANDLERS 
     
     const handleBookEvent = async (eventId) => {
         try {
@@ -52,21 +61,35 @@ function ListEvents() {
 
   return <>
     <h2>EVENTS</h2>
+    
     <ul>
-        {data && data.map(event => {
-            return <li key={event.id}>
-                <div>
-                    <h3>
-                    {event.name}
-                    </h3>
-                    <p>AVAILABLE SPOTS: {event.seats}</p>
-                    <button onClick={() => modalHandler(event)}>View</button>
-                    
-                </div>
-            </li>
-        }
-        )}
-    </ul>
+                <button onClick={toggleSort}>
+                    ORDER BY {sortBy.toUpperCase()}
+                </button>
+                {data &&
+                    data
+                        .slice()
+                        .sort((a, b) =>
+                            sortBy === 'date'
+                                ? new Date(a.date) - new Date(b.date)
+                                : a.name.localeCompare(b.name)
+                        )
+                        .filter(event => new Date(event.date) > new Date())
+                        .map(event => (
+                            <li key={event.id}>
+                                <div>
+                                    <h3>{event.name}</h3>
+                                    <p>
+                                        AVAILABLE SPOTS: {event.seats - event.attendees.length}
+                                    </p>
+                                    <p>DATE: {event.date}</p>
+                                    <button onClick={() => modalHandler(event)}>
+                                        View
+                                    </button>
+                                </div>
+                            </li>
+                        ))}
+            </ul>
     {showModal && <Modal 
     event={event} 
     onClose={modalClose} 

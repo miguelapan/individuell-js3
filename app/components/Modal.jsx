@@ -5,6 +5,7 @@ function Modal({ event, onClose, onBook }) {
 
     const { user, userId} = useAuth();
     const [ isBooked, setIsBooked ] = useState(false)
+    const [ isFullyBooked, setIsFullyBooked ] = useState(false)
 
     const handleBook = () => {
         onBook(event.id);
@@ -14,8 +15,6 @@ function Modal({ event, onClose, onBook }) {
     }
 
     useEffect(() => {
-        // console.log("userid :", userId)
-        // console.log("event attenders :", event.attendees)
         if(event.attendees.includes(userId)){
             setIsBooked(true)
         }
@@ -23,6 +22,14 @@ function Modal({ event, onClose, onBook }) {
             setIsBooked(false)
         }
     },[event])
+
+    useEffect(() => {
+        if(event.seats === 0){
+            setIsFullyBooked(true)
+        }else{
+            setIsFullyBooked(false)
+        }
+        },[event])
 
     return (
         <div className="modal">
@@ -32,6 +39,7 @@ function Modal({ event, onClose, onBook }) {
                 {isBooked ? <button onClick={cancelBooking}>CANCEL BOOKING</button> : <button onClick={handleBook}>BOOK</button>}
                 <button onClick={onClose}>Close</button>
                 {isBooked ? <p>YOU HAVE BOOKED THIS EVENT</p> : null}
+                {isFullyBooked ? <p>THIS EVENT IS FULLY BOOKED</p> : null}
             </div>
         </div>
     );
